@@ -2,21 +2,16 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
-const userSchema = new Schema({
+const sellerSchema = new Schema({
     name: {
         type: String,
         required: true,
         minlength: 3
     }, 
-    address: {
+    company: {
         type: String,
         required: true,
         minlength: 3
-    },
-    phoneNo: {
-        type: Number,
-        required: true,
-        minlength: 10
     },
     email: {
         type: String,
@@ -29,18 +24,13 @@ const userSchema = new Schema({
         required: true,
         minlength: 3
     },
-    cart: {
-        type: Array,
-        required: true,
-        minlength: 0
-    },
-    orders: {
+    products: {
         type: Array,
         required: true,
         minlength: 0
     }
 });
 
-const User = mongoose.model('User', userSchema);
+const Seller = mongoose.model('Seller', sellerSchema);
 
-module.exports = User;
+module.exports = Seller;
