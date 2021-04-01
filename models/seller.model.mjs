@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const Schema = mongoose.Schema;
 
@@ -30,13 +30,12 @@ const sellerSchema = new Schema({
         required: true,
         minlength: 3
     },
-    products: {
-        type: Array,
+    products: [{
+        type: Schema.Types.Object,
+        ref: "Product",
         required: true,
         minlength: 0
-    }
+    }]
 });
 
-const Seller = mongoose.model('Seller', sellerSchema);
-
-module.exports = Seller;
+export const Seller = mongoose.model('Seller', sellerSchema);

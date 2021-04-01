@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const Schema = mongoose.Schema;
 
@@ -35,18 +35,18 @@ const userSchema = new Schema({
         required: true,
         minlength: 3
     },
-    cart: {
-        type: Array,
+    cart: [{
+        type: Schema.Types.ObjectId,
+        ref: "Product",
         required: true,
         minlength: 0
-    },
-    orders: {
-        type: Array,
+    }],
+    orders: [{
+        type: Schema.Types.ObjectId,
+        ref: "Order",
         required: true,
         minlength: 0
-    }
+    }]
 });
 
-const User = mongoose.model('User', userSchema);
-
-module.exports = User;
+export const User = mongoose.model('User', userSchema);

@@ -1,11 +1,12 @@
-const express = require('express');
-const cors = require('cors');
-require('dotenv').config();
-const mongoose = require('mongoose');
+import {default as express} from 'express';
+import {default as cors} from 'cors';
+import dotenv from 'dotenv';
+dotenv.config();
+import mongoose from 'mongoose';
 
 // Routes require
-const userRoutes = require("./routes/user");
-const sellerRoutes = require("./routes/seller");
+import {router as userRouter} from "./routes/user.mjs";
+import {router as sellerRouter} from "./routes/seller.mjs";
 
 // Initial setup
 const app = express();
@@ -38,10 +39,10 @@ app.get("", (req, res) => {
 })
 
 // User Routes
-app.use("/user", userRoutes);
+app.use("/user", userRouter);
 
 // Seller Routes
-app.use("/seller", sellerRoutes);
+app.use("/seller", sellerRouter);
 
 // App server initialization
 app.listen(port, () => {

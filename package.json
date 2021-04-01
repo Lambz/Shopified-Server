@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "description": "Backend server for Shopified App",
   "main": "server.js",
+  "type": "module",
   "scripts": {
-    "test": "nodemon server",
-    "start": "node server.js"
+    "test": "nodemon server.mjs",
+    "start": "node server.mjs"
   },
   "author": "Chetan Singh",
   "license": "MIT",
