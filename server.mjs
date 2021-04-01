@@ -9,6 +9,7 @@ import { router as userRouter } from "./routes/user.mjs";
 import { router as sellerRouter } from "./routes/seller.mjs";
 import { router as subCategoryRouter } from "./routes/subCategory.mjs";
 import { router as categoryRouter } from "./routes/category.mjs";
+import { router as productRouter } from "./routes/product.mjs";
 
 // Initial setup
 const app = express();
@@ -56,6 +57,9 @@ app.use("/subCategories", subCategoryRouter);
 
 //Category Route
 app.use("/categories", categoryRouter);
+
+//Products Route
+app.use("/products", productRouter);
 
 // App server initialization
 app.listen(port, () => {
