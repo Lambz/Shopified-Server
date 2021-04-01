@@ -9,7 +9,7 @@ router.route('/').get((req, res) => {
 });
 
 // ADD seller
-router.route('/add').get((req, res) => {
+router.route('/add').post((req, res) => {
     const id = req.body.id;
     const name = req.body.name;
     const company = req.body.name;
@@ -17,7 +17,7 @@ router.route('/add').get((req, res) => {
     const password = req.body.password;
     const products = req.body.products;
 
-    const newSeller = Seller({id, name, company, email, password, products});
+    const newSeller = Seller({_id: id, name: name, company: company, email: email, password: password, products: products});
 
     newSeller.save()
     .then(() => res.json("Seller Added"))
@@ -42,7 +42,7 @@ router.route('/delete/:id').delete((req, res) => {
 router.route('/update/:id').post((req, res) => {
     Seller.findById(req.params.id)
     .then(seller => {
-        seller.id = req.body.id;
+
         seller.name = req.body.name;
         seller.company = req.body.company;
         seller.email = req.body.email;

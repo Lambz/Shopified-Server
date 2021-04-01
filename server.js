@@ -14,6 +14,7 @@ const port = process.env.PORT || 3000;
 // App usage for CORS and JSON parsing
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded());
 
 // Connection to MongoDB server and DB
 // Connection methods
@@ -28,7 +29,6 @@ const connection = mongoose.connection;
   connection.once('open', () => {
     console.log("MongoDB connected!");
 });
-
 
 // API endpopints
 // For GET, POST, DELETE and UPDATE

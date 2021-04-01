@@ -44,7 +44,6 @@ router.route('/delete/:id').delete((req, res) => {
 router.route('/update/:id').post((req, res) => {
     User.findById(req.params.id)
     .then(user => {
-        user.id = req.body.id;
         user.name = req.body.name;
         user.address = req.body.address;
         user.phoneNo = req.body.phoneNo;
