@@ -34,15 +34,14 @@ const connection = mongoose.connection;
 // For GET, POST, DELETE and UPDATE
 
 app.get("", (req, res) => {
-    res.json({Message: "Welcome"});
+    res.json("Welcome");
 })
 
 // User Routes
 app.use("/user", userRoutes);
 
 // Seller Routes
-
-
+app.use("/seller", sellerRoutes);
 
 // App server initialization
 app.listen(port, () => {
