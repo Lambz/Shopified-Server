@@ -1,12 +1,14 @@
-import {default as express} from 'express';
-import {default as cors} from 'cors';
-import dotenv from 'dotenv';
+import { default as express } from "express";
+import { default as cors } from "cors";
+import dotenv from "dotenv";
 dotenv.config();
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 // Routes require
-import {router as userRouter} from "./routes/user.mjs";
-import {router as sellerRouter} from "./routes/seller.mjs";
+import { router as userRouter } from "./routes/user.mjs";
+import { router as sellerRouter } from "./routes/seller.mjs";
+import { router as subCategoryRouter } from "./routes/subCategory.mjs";
+import { router as categoryRouter } from "./routes/category.mjs";
 
 // Initial setup
 const app = express();
@@ -20,14 +22,19 @@ app.use(express.urlencoded());
 // Connection to MongoDB server and DB
 // Connection methods
 const uri = process.env.DB_URI;
-mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true }).then(()=> {
-  console.log("Connection established with MongoDB server");
-}).catch(err => {
-  console.log(`Error establishing connection with MongoDB server\n${err}`);
-});
+mongoose
+    .connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => {
+        console.log("Connection established with MongoDB server");
+    })
+    .catch((err) => {
+        console.log(
+            `Error establishing connection with MongoDB server\n${err}`
+        );
+    });
 
 const connection = mongoose.connection;
-  connection.once('open', () => {
+connection.once("open", () => {
     console.log("MongoDB connected!");
 });
 
@@ -36,7 +43,7 @@ const connection = mongoose.connection;
 
 app.get("", (req, res) => {
     res.json("Welcome");
-})
+});
 
 // User Routes
 app.use("/user", userRouter);
@@ -44,7 +51,13 @@ app.use("/user", userRouter);
 // Seller Routes
 app.use("/seller", sellerRouter);
 
+// Sub Category Route
+app.use("/subCategories", subCategoryRouter);
+
+//Category Route
+app.use("/categories", categoryRouter);
+
 // App server initialization
 app.listen(port, () => {
     console.log(`Server running at PORT ${port}`);
-})
+});
