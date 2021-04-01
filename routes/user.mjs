@@ -28,7 +28,7 @@ router.post('/add', async (req, res, next) => {
     const newUser = new User({id, name, address, phoneNo, email, password, cart, orders});
     try {
         await newUser.save();
-        newUser.save();
+        res.json("User Added");
     }
     catch(err) {
         res.status(400).json('Error: ' + err);
