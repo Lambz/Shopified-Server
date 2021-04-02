@@ -25,7 +25,7 @@ router.post('/add', async (req, res, next) => {
     const cart = req.body.cart;
     const orders = req.body.orders;
 
-    const newUser = new User({id, name, address, phoneNo, email, password, cart, orders});
+    const newUser = new User({_id: id, name: name, address: address, phoneNo: phoneNo, email: email, password: password, cart: cart, orders: orders});
     try {
         await newUser.save();
         res.json("User Added");
