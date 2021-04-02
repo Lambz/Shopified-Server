@@ -10,7 +10,7 @@ const productSchema = new Schema({
     name: String,
     price: Number,
     quantity: Number,
-    seller: { type: Schema.Types.ObjectId, ref: "Seller" },
+    seller: { type: String, ref: "Seller" },
     subcategory: { type: Schema.Types.ObjectId, ref: "SubCategory" },
 });
 
