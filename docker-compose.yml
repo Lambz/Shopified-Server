@@ -1,0 +1,8 @@
+version: '3'
+services: 
+    shopified:
+        container_name: docker-node-express
+        restart: always
+        build: .
+        ports: 
+            - '80:3000'
