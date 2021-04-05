@@ -17,7 +17,7 @@ router.get("/", async (req, res, next) => {
 
 // POST add user
 router.post("/add", async (req, res, next) => {
-    const id = req.body.id;
+    const id = req.body._id;
     const name = req.body.name;
     const address = req.body.address;
     const phoneNo = req.body.phoneNo;
@@ -59,8 +59,15 @@ router.get("/:id", async (req, res, next) => {
 // DELETE user by ic
 router.delete("/delete/:id", async (req, res, next) => {
     try {
-        await User.findById(req.params.id);
-        res.json("User Deleted");
+        await User.findOneAndRemove(
+            { _id: req.params.id },
+            async (err, doc) => {
+                if (err) {
+                    res.json({ Error: err });
+                }
+                res.json({ Success: true });
+            }
+        );
     } catch (err) {
         res.status(400).json("Error: " + err);
         next(err);

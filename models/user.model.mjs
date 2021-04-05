@@ -12,7 +12,6 @@ const userSchema = new Schema({
     name: {
         type: String,
         required: true,
-        minlength: 3,
     },
     address: {
         type: String,
