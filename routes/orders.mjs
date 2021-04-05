@@ -5,7 +5,15 @@ export const router = express.Router();
 // GET all users
 router.get("/", async (req, res, next) => {
     try {
-        const orders = await Order.find();
+        const orders = await Order.find()
+            .populate({
+                path: "products",
+                populate: "product",
+            })
+            .populate({
+                path: "products.product",
+                populate: "category",
+            });
         // .populate({
         //     path: "cart",
         //     populate: "product",
@@ -26,6 +34,38 @@ router.post("/updateStatus/:id", async (req, res, next) => {
         order.status = status;
         await order.save();
         res.json({ Success: true });
+    } catch (error) {
+        res.status(400).json({ Error: error });
+        next(error);
+    }
+});
+
+router.get("/seller/:id", async (req, res, next) => {
+    let id = req.params.id;
+    try {
+        let o = await Order.find()
+            .populate({
+                path: "products",
+                populate: "product",
+            })
+            .populate({
+                path: "products.product",
+                populate: "category",
+            });
+        let orders = [];
+        o.forEach((order) => {
+            let add = false;
+            order.products.forEach((product) => {
+                // console.log(product.product.seller);
+                if (product.product.seller == id) {
+                    add = true;
+                }
+            });
+            if (add) {
+                orders.push(order);
+            }
+        });
+        res.json(orders);
     } catch (error) {
         res.status(400).json({ Error: error });
         next(error);
