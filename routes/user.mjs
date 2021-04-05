@@ -7,10 +7,14 @@ import { User as User } from "../models/user.model.mjs";
 // GET all users
 router.get("/", async (req, res, next) => {
     try {
-        const users = await User.find();
+        const users = await User.find().populate({
+            path: "cart",
+            populate: "product",
+        });
+        // await users.cart.populate("product");
         res.json(users);
     } catch (error) {
-        res.status(400).json("Error: " + error);
+        res.status(400).json({ Error: error });
         next(error);
     }
 });
@@ -48,7 +52,10 @@ router.post("/add", async (req, res, next) => {
 // GET user by id
 router.get("/:id", async (req, res, next) => {
     try {
-        const user = await User.findById(req.params.id);
+        const user = await User.findById(req.params.id).populate({
+            path: "cart",
+            populate: "product",
+        });
         res.json(user);
     } catch (err) {
         res.status(400).json("Error: " + err);
