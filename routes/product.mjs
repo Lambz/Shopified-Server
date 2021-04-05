@@ -191,8 +191,24 @@ router.post("/search", async (req, res, next) => {
     try {
         let products = await Product.find({
             name: { $regex: search, $options: "ix" },
-        });
+        })
+            .populate("seller")
+            .populate("category")
+            .populate("subcategory");
 
+        res.json(products);
+    } catch (error) {
+        res.status(400).json({ Error: error });
+        next(error);
+    }
+});
+
+router.get("/subCategoryProducts/:id", async (req, res, next) => {
+    try {
+        let products = await Product.find({ subcategory: req.params.id })
+            .populate("seller")
+            .populate("category")
+            .populate("subcategory");
         res.json(products);
     } catch (error) {
         res.status(400).json({ Error: error });
