@@ -186,4 +186,18 @@ router.get("/subCategory/:id", async (req, res, next) => {
     }
 });
 
+router.post("/search", async (req, res, next) => {
+    const search = req.body.search;
+    try {
+        let products = await Product.find({
+            name: { $regex: search, $options: "ix" },
+        });
+
+        res.json(products);
+    } catch (error) {
+        res.status(400).json({ Error: error });
+        next(error);
+    }
+});
+
 // .sort({ updatedAt: "desc" })

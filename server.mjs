@@ -10,6 +10,7 @@ import { router as sellerRouter } from "./routes/seller.mjs";
 import { router as subCategoryRouter } from "./routes/subCategory.mjs";
 import { router as categoryRouter } from "./routes/category.mjs";
 import { router as productRouter } from "./routes/product.mjs";
+import { router as orderRouter } from "./routes/orders.mjs";
 
 // Initial setup
 const app = express();
@@ -60,6 +61,9 @@ app.use("/categories", categoryRouter);
 
 //Products Route
 app.use("/products", productRouter);
+
+//Order Route
+app.use("/orders", orderRouter);
 
 // App server initialization
 app.listen(port, () => {

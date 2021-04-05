@@ -7,10 +7,19 @@ import { User as User } from "../models/user.model.mjs";
 // GET all users
 router.get("/", async (req, res, next) => {
     try {
-        const users = await User.find().populate({
-            path: "cart",
-            populate: "product",
-        });
+        let users = await User.find()
+            .populate({
+                path: "cart",
+                populate: "product",
+            })
+            .populate("orders")
+            .populate({
+                path: "orders",
+                populate: {
+                    path: "products",
+                    populate: "product",
+                },
+            });
         // await users.cart.populate("product");
         res.json(users);
     } catch (error) {
@@ -52,10 +61,19 @@ router.post("/add", async (req, res, next) => {
 // GET user by id
 router.get("/:id", async (req, res, next) => {
     try {
-        const user = await User.findById(req.params.id).populate({
-            path: "cart",
-            populate: "product",
-        });
+        const user = await User.findById(req.params.id)
+            .populate({
+                path: "cart",
+                populate: "product",
+            })
+            .populate("orders")
+            .populate({
+                path: "orders",
+                populate: {
+                    path: "products",
+                    populate: "product",
+                },
+            });
         res.json(user);
     } catch (err) {
         res.status(400).json("Error: " + err);
@@ -102,20 +120,32 @@ router.post("/update/:id", async (req, res, next) => {
 
 router.post("/addOrder/:id", async (req, res, next) => {
     const user = await User.findById(req.params.id);
-    const products = req.body.products;
+    const name = req.body.name;
+    const phoneNo = req.body.phoneNo;
+    const address = req.body.address;
+    let products = req.body.products;
+    // console.log(user);
     try {
         if (products == null || products == undefined) {
-            products = user.products;
-            user.products = [];
+            products = user.cart;
+            user.cart = [];
         }
         products.forEach(async (proudct) => {
-            let p = Product.findById(proudct.product);
+            let p = await Product.findById(proudct.product._id);
             p.quantity = p.quantity - proudct.quantity;
             await p.save();
         });
-        let newOrder = new Order(user, products, 0);
+        // console.log(products);
+        let newOrder = new Order({
+            name: name,
+            phoneNo: phoneNo,
+            address: address,
+            products: products,
+            status: 0,
+        });
+        // console.log(newOrder);
         await newOrder.save();
-        user.orders([...user.orders, newOrder]);
+        user.orders = [...user.orders, newOrder];
         await user.save();
         res.json({ Success: true });
     } catch (err) {
