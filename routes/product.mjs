@@ -153,17 +153,37 @@ router.get("/randomProduct", async (req, res, next) => {
                 });
         }
     });
-    // const products = await Product.find()
-    //     .limit(6)
-    //     .sort({ updatedAt: "desc" })
-    //     .populate("seller")
-    //     .populate("category")
-    //     .populate("subcategory");
-    // res.json(products);
-    // } catch (error) {
-    //     res.status(400).json({ Error: error });
-    //     next(error);
-    // }
+});
+
+router.get("/subCategory/:id", async (req, res, next) => {
+    try {
+        let result;
+        let product = await Product.find({ subcategory: req.params.id })
+            .limit(1)
+            .exec();
+
+        // console.log(product);
+        if (product.length > 0) {
+            product = product[0];
+            if (product.images.length > 0) {
+                result = { img: product.images[0] };
+            } else {
+                result = {
+                    img:
+                        "https://www.amityinternational.com/wp-content/uploads/2019/02/product-placeholder.jpg",
+                };
+            }
+        } else {
+            result = {
+                img:
+                    "https://www.amityinternational.com/wp-content/uploads/2019/02/product-placeholder.jpg",
+            };
+        }
+        res.json(result);
+    } catch (error) {
+        res.status(400).json({ Error: error });
+        next(error);
+    }
 });
 
 // .sort({ updatedAt: "desc" })
