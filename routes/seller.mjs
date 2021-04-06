@@ -34,18 +34,25 @@ router.post("/add", async (req, res, next) => {
         await newSeller.save();
         res.json("Seller Added");
     } catch (err) {
-        res.status(400).json("Error: " + err);
+        res.status(400).json({ Error: err });
         next(err);
     }
 });
 
 // GET seller by id
 router.get("/:id", async (req, res, next) => {
+    // console.log("get request");
     try {
-        const seller = await Seller.findById(req.params.id);
+        const seller = await Seller.findById(req.params.id)
+            .populate("products")
+            .populate({
+                path: "products",
+                populate: ["category", "subcategory"],
+            });
+        // console.log(seller);
         res.json(seller);
     } catch (err) {
-        res.status(400).json("Error: " + err);
+        res.status(400).json({ Error: err });
         next(err);
     }
 });

@@ -1,5 +1,6 @@
 import express from "express";
 import { Product } from "../models/product.model.mjs";
+import { Seller } from "../models/seller.model.mjs";
 export const router = express.Router();
 
 // GET all subCategories
@@ -40,6 +41,9 @@ router.post("/add", async (req, res, next) => {
     });
     try {
         await newProduct.save();
+        let s = await Seller.findOne({ _id: seller });
+        s.products = [...s.products, newProduct._id];
+        await s.save();
         res.json(newProduct);
     } catch (err) {
         res.status(400).json({ Error: err });
