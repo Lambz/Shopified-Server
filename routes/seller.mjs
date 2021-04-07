@@ -71,6 +71,7 @@ router.delete("/delete/:id", async (req, res, next) => {
 // UPDATE seller
 router.post("/update/:id", async (req, res, next) => {
     try {
+        // console.log(req.body);
         const seller = await Seller.findById(req.params.id);
         seller.name = req.body.name;
         seller.company = req.body.company;
